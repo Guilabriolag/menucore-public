@@ -1,0 +1,32 @@
+header {
+  background: #111;
+  color: #fff;
+  padding: 16px;
+  text-align: center;
+}
+
+main {
+  padding: 16px;
+}
+
+section {
+  padding: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.cart {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background: #fff;
+  border-left: 1px solid #ddd;
+  padding: 16px;
+  overflow-y: auto;
+}
