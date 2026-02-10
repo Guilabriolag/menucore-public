@@ -1,43 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>MenuCore • Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/components.css">
-</head>
-
-<body>
-
-<h2>Login MenuCore</h2>
-
-<form id="loginForm">
-  <input type="email" id="email" placeholder="Email" required>
-  <input type="password" id="password" placeholder="Senha">
-  <button class="btn-primary">Entrar</button>
-</form>
-
 <script type="module">
   import { login } from './js/auth.js'
 
-  document.getElementById('loginForm').addEventListener('submit', async e => {
+  const form = document.getElementById('loginForm')
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    const email = email.value
-    const password = password.value
+    const emailInput = document.getElementById('email')
+    const passwordInput = document.getElementById('password')
 
-    await login(email, password)
+    const email = emailInput.value.trim()
+    const password = passwordInput.value
 
-    if (email.includes('admin')) {
+    if (!email) {
+      alert('Informe o email')
+      return
+    }
+
+    const user = await login(email, password)
+
+    // 🔀 redirecionamento baseado na role
+    if (user.role === 'admin') {
       window.location.href = 'painel.html'
-    } else if (email.includes('cozinha')) {
+    } else if (user.role === 'kitchen') {
       window.location.href = 'cozinha.html'
     } else {
       window.location.href = 'index.html'
     }
   })
 </script>
-
-</body>
-</html>
