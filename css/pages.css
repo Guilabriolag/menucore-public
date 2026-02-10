@@ -1,0 +1,38 @@
+/* PRODUTOS */
+.product strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.product button {
+  margin-top: 8px;
+  width: 100%;
+}
+
+/* CARRINHO */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.cart-item input {
+  width: 50px;
+}
+
+.cart-total {
+  margin-top: 16px;
+  font-size: 18px;
+}
+
+/* COZINHA */
+.kitchen-order {
+  border-left: 6px solid #0d6efd;
+}
+
+.kitchen-actions button {
+  margin-top: 8px;
+  width: 100%;
+}
