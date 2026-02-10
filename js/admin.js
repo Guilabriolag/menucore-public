@@ -10,19 +10,14 @@ import { STATE } from './state.js'
 
 export async function initAdmin() {
 
-  // 🔐 proteção: só admin
   const ok = requireAuth(['admin'])
   if (!ok) return
 
-  // 📦 carrega dados
   await loadProducts()
   await loadOrders()
 
-  // 🧾 renderiza
   renderProductAdmin()
   renderAdminStats()
-
-  // 🎛️ eventos
   bindAdminEvents()
 }
 
@@ -34,16 +29,9 @@ function renderAdminStats() {
   const el = document.getElementById('adminStats')
   if (!el) return
 
-  const totalOrders = STATE.orders.length
-  const totalRevenue = STATE.orders.reduce((s, o) => {
-    return s + o.items.reduce(
-      (t, i) => t + i.product.price * i.qty, 0
-    )
-  }, 0)
-
   el.innerHTML = `
-    <div class="card">Pedidos: <strong>${totalOrders}</strong></div>
-    <div class="card">Faturamento: <strong>R$ ${totalRevenue.toFixed(2)}</strong></div>
+    <div class="card">Produtos: <strong>${STATE.products.length}</strong></div>
+    <div class="card">Pedidos: <strong>${STATE.orders.length}</strong></div>
   `
 }
 
@@ -52,22 +40,29 @@ function renderAdminStats() {
 ========================== */
 
 function bindAdminEvents() {
+  document.getElementById('saveProduct')?.addEventListener('click', async () => {
 
-  // salvar produto
-  document.addEventListener('click', async e => {
-    if (e.target.id === 'saveProduct') {
-      const name = document.getElementById('productName').value
-      const price = document.getElementById('productPrice').value
+    const nameEl = document.getElementById('productName')
+    const priceEl = document.getElementById('productPrice')
 
-      if (!name || !price) {
-        alert('Nome e preço obrigatórios')
-        return
-      }
-
-      await saveProduct({ name, price })
-      await loadProducts()
-      renderProductAdmin()
+    if (!nameEl || !priceEl) {
+      alert('Campos não encontrados')
+      return
     }
-  })
 
+    const name = nameEl.value.trim()
+    const price = Number(priceEl.value)
+
+    if (!name || price <= 0) {
+      alert('Nome ou preço inválido')
+      return
+    }
+
+    await saveProduct({ name, price })
+    await loadProducts()
+    renderProductAdmin()
+
+    nameEl.value = ''
+    priceEl.value = ''
+  })
 }
